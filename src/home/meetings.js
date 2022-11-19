@@ -1,11 +1,12 @@
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { NavigationBar } from './navbar';
+// import { Card } from 'react-bootstrap';
+// import { NavigationBar } from './navbar';
 
-export const Meetings = () => (
+import CardComponent from "./cardComponent"
 
-
-    <NavigationBar />
-
-
-)
+export const Meetings = () => {
+    return (
+        <CardComponent title="hello" subtitle="subtitle" text="text" links={[{name: "name", link: "link"}]}></CardComponent>
+    )
+}
