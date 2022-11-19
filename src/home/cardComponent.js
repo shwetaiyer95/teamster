@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import '@coreui/coreui/dist/css/coreui.min.css'
 // import Card from 'react-bootstrap/Card';
 import {Link} from 'react-router-dom';
-const CardComponent = ({title, subtitle, text, links, handleModalOpen}) => {
+const CardComponent = ({title, subtitle, text, link, handleModalOpen}) => {
 
   const getLink = (name, link) => {
     return (
@@ -23,9 +23,7 @@ const CardComponent = ({title, subtitle, text, links, handleModalOpen}) => {
         {text && <CCardText>
           {text}
         </CCardText>}
-        {links.map(link => {
-          return getLink(link.name, link.link)
-        })}
+          {getLink(link)}
       </CCardBody>
     </CCard>
   );
