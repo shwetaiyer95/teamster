@@ -16,6 +16,8 @@ CREATE TABLE `team` (
 
 CREATE TABLE `user_detail` (
   `userid` varchar(45) NOT NULL,
+  `focus_time` int DEFAULT NULL,
+  `break_time` int DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `end_time` datetime DEFAULT NULL,
   PRIMARY KEY (`userid`),
