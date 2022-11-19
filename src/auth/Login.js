@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios"
 import { useNavigate, Link } from "react-router-dom";
-
+import './Login.css'
 export function Login(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +37,7 @@ export function Login(){
     return (
         <div className="Auth">
         <div className="auth-container">
-            <h1>Speak Notes</h1>
+            <h1>Teamster</h1>
             <h2>Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
                 <label htmlFor="email">email</label>
