@@ -1,3 +1,9 @@
 .cardDiv {
     display: flex !important;
 }
+
+.button{
+    background-color: aquamarine;
+    border: 5px;
+    padding: 5px;
+}
