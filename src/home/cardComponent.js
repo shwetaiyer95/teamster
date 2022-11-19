@@ -6,12 +6,12 @@ const CardComponent = ({title, subtitle, text, links}) => {
 
   const getLink = (name, link) => {
     return (
-      <CCardLink id={name} href={link}>{name}</CCardLink>
+      <CCardLink key={name} href={link}>{name}</CCardLink>
     )
   }
 
   return (
-    <CCard style={{ width: '18rem' }}>
+    <CCard style={{ width: '18rem', margin: 15 }}>
       <CCardBody>
         <CCardTitle>{title}</CCardTitle>
         <CCardSubtitle className="mb-2 text-medium-emphasis">{subtitle}</CCardSubtitle>
