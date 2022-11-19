@@ -8,6 +8,7 @@ import {
   Route
 }   
 from 'react-router-dom'; 
+import { Meetings } from './team/meetings';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/Registration" element={<Registration/>}  />
+          <Route path="/teams" element={<Meetings/>} />
         </Routes>
       </Router>
   );
