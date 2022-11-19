@@ -8,7 +8,7 @@ import {
   Route
 }   
 from 'react-router-dom'; 
-import { Meetings } from './team/meetings';
+import { Meetings } from './home/meetings';
 
 
 function App() {

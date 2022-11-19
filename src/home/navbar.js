@@ -5,12 +5,14 @@ import './navbar.css';
 export const NavigationBar = ({adminuser}) => {
   // TODO: Call api for teams
   
+const teams = [{name: "team 1"}, {name: "team 2"}, {name: "team3"}]
+
   return (
     <div style={{ width: 240 }}>
     <Sidenav defaultOpenKeys={['3', '4']}>
       <Sidenav.Body>
         <Nav activeKey="1" style={{height: 900}}>
-          <Nav.Menu eventKey="4" title="Settings">
+          <Nav.Menu eventKey="1" title="Settings">
             <Nav.Item eventKey="4-1">Applications</Nav.Item>
             <Nav.Item eventKey="4-2">Channels</Nav.Item>
             <Nav.Item eventKey="4-3">Versions</Nav.Item>
@@ -19,13 +21,13 @@ export const NavigationBar = ({adminuser}) => {
               <Nav.Item eventKey="4-5-2">Action Params</Nav.Item>
             </Nav.Menu>
           </Nav.Menu>
-          <Nav.Item eventKey="1">
+          <Nav.Item eventKey="1-1">
             Tasks
           </Nav.Item>
-          <Nav.Item eventKey="2">
+          <Nav.Item eventKey="1-2">
             Teamboard
           </Nav.Item>
-          <Nav.Item eventKey="2">
+          <Nav.Item eventKey="1-3">
             Meetings
           </Nav.Item>
           {/* <Nav.Menu eventKey="4" title="Settings">
