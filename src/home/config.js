@@ -10,6 +10,21 @@ const Config = ({title, subtitle, text, links}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [teamName, setTeamName] = useState('');
+    const [timezone, setTimeZone] = useState('America/New_York');
+    const [summary, setSummary] = useState('');
+    const timezones = [
+        { value: 'America/New_York', text: "America/New_York" },
+        { value: 'America/Chicago', text: "America/Chicago" },
+        { value: 'America/Denver', text: "America/Denver" },
+        { value: 'America/Los_Angeles', text: "America/Los_Angeles" }
+        ]
+
+
+    const handleTimeZone = e => { 
+        setTimeZone(e.target.value);
+    }
+
     function handleUserCreatModalClose() {
         console.log("reached")
         setShowUserCreate(false)
@@ -43,7 +58,8 @@ const Config = ({title, subtitle, text, links}) => {
 
     const handleUserCreateSubmit = (e) => {
         e.preventDefault();
-        Axios.post('http://127.0.0.1:5000/register', {name: name, email:email, password: password, userType: "non-admin"})
+        console.log( {name: name, email:email, password: password, usertype: "user"})
+        Axios.post('http://127.0.0.1:5000/register', {name: name, email:email, password: password, usertype: "user"})
         .then((response) => {
           console.log(response)
           alert("User created, please login.")
@@ -56,10 +72,25 @@ const Config = ({title, subtitle, text, links}) => {
         e.target.reset();
     }
 
+    const handleTeamCreateSubmit = (e) => {
+        e.preventDefault();
+        console.log( {name: teamName, timezone:timezone, summary: summary})
+        Axios.post('http://127.0.0.1:5000/create_team', {name: teamName, timezone:timezone, summary: summary})
+        .then((response) => {
+          console.log(response)
+          alert("Team created")
+        })
+        .catch((error) => {
+            if (error.response.status === 400) {
+                alert("Please enter all fields correctly")
+            }
+          })
+        e.target.reset();
+    }
     function createUserForm(){
         return(
             <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>User Name</Form.Label>
                 <Form.Control onChange={(e) => setName(e.target.value)}  placeholder="Enter user name" />
             </Form.Group>
@@ -75,10 +106,7 @@ const Config = ({title, subtitle, text, links}) => {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" onChange={(e) => setPassword(e.target.value)}  placeholder="Password" />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button onclick = {handleUserCreateSubmit}variant="primary" type="submit">
+            <Button onClick = {handleUserCreateSubmit} variant="primary" >
             Submit
             </Button>
             </Form>
@@ -88,26 +116,24 @@ const Config = ({title, subtitle, text, links}) => {
     function createTeamsForm(){
         return(
             <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="formTeam">
                 <Form.Label>Team name</Form.Label>
-                <Form.Control onChange={(e) => setName(e.target.value)}  placeholder="Enter user name" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email"  onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" />
-                <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                </Form.Text>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" onChange={(e) => setPassword(e.target.value)}  placeholder="Password" />
+                <Form.Control onChange={(e) => setTeamName(e.target.value)}  placeholder="Enter user name" />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                <Form.Check type="checkbox" label="Check me out" />
+                <Form.Group className="mb-3" controlId="formTeam">
+                <Form.Label>Summary</Form.Label>
+                <Form.Control onChange={(e) => setSummary(e.target.value)}  placeholder="Enter user name" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formTeam">
+                <Form.Label>Time Zone </Form.Label>
+                <select style = {{margin: "5px"}} value={timezone} onChange={handleTimeZone}>
+              {timezones.map(item => {
+                  return (<option key={item.value} 
+                  value={item.value}>{item.text}</option>);
+              })}
+            </select>
             </Form.Group>
-            <Button onclick = {handleUserCreateSubmit}variant="primary" type="submit">
+            <Button onClick = {handleTeamCreateSubmit} variant="primary" type="submit">
             Submit
             </Button>
             </Form>
@@ -127,7 +153,7 @@ const Config = ({title, subtitle, text, links}) => {
             {createUserForm()}
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleUserCreatModalClose}>
+            <Button variant="primary" onClick={handleUserCreatModalClose}>
                 Close
             </Button>
         </Modal.Footer>

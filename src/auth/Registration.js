@@ -12,7 +12,7 @@ export function Registration(){
   }
     const handleSubmit = (e) => {
         e.preventDefault();
-        Axios.post('http://127.0.0.1:5000/register', {name: name, email:email, password: password})
+        Axios.post('http://127.0.0.1:5000/register', {name: name, email:email, password: password, usertype: "admin"})
         .then((response) => {
           console.log(response)
           routeChange("/")

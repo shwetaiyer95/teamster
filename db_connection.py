@@ -6,29 +6,20 @@ from googleapiclient.errors import HttpError
 
 from flask import Flask, request, jsonify
 from flask import make_response
-<<<<<<< HEAD
 from flask_cors import CORS
 import pymysql
-HOST = "teamster-db.cnxe9x6em0y0.us-east-1.rds.amazonaws.com"
-PORT = 3306
-USER = "admin_user"
-PASSWORD = "qYUxs1Y6b1I7JNGqR5u33z$"
-DBNAME = "teamster"
-import os
-=======
 
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-
-HOST = os.getenv("HOST")
-PORT = os.getenv("DB_PORT")
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+HOST = os.getenv("DB_HOST")
+PORT = int(os.getenv("DB_PORT"))
 USER = os.getenv("DB_USER")
 PASSWORD = os.getenv("USER_KEY")
 DBNAME = os.getenv("DB_NAME")
 
->>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 app = Flask(__name__)
 CORS(app)
 
@@ -38,7 +29,6 @@ def connect():
     return conn
 
 
-<<<<<<< HEAD
 def create_credentials(credentials_file: str):
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -78,13 +68,14 @@ def create_team(name, summary, time_zone):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            creds = create_credentials()
+            creds = create_credentials("credentials.json")
             calendar_id = create_calendar(creds, summary, time_zone)
-            sql = "INSERT INTO team(teamID, teamName) values(UUID(),'%s','%s','%s');" % (name, calendar_id, time_zone)
+            sql = "INSERT INTO team(teamID, teamName, calendar, timezone) values(UUID(),'%s','%s','%s');" % (name, calendar_id, time_zone)
             cur.execute(sql)
             conn.commit()
             return True
-    except Exception:
+    except Exception as e:
+        print(e)
         return False
 
 
@@ -99,10 +90,8 @@ def team_creator():
     if name is not None:
         if create_team(name, summary, timezone):
             return make_response(jsonify({'message': 'Team created'}), 200)
+    return make_response(jsonify({}), 400)
 
-
-=======
->>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 def create_user(name, email, passwd, usertype):
     try:
         conn = connect()
@@ -112,11 +101,10 @@ def create_user(name, email, passwd, usertype):
             cur.execute(sql)
             conn.commit()
             return True
-    except Exception:
-
+    except Exception as e:
+        print(e)
         return False
 
-<<<<<<< HEAD
 # def create_team(name):
 #     try:
 #         conn = connect()
@@ -127,19 +115,6 @@ def create_user(name, email, passwd, usertype):
 #             return True
 #     except Exception:
 #         return False
-=======
-
-def create_team(name):
-    try:
-        conn = connect()
-        with conn.cursor() as cur:
-            sql = "INSERT INTO team(teamID, teamName) values(UUID(),'%s');" % (name)
-            cur.execute(sql)
-            conn.commit()
-            return True
-    except Exception:
-        return False
->>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 
 
 def create_user_details(uid, pom_start, pom_end):
@@ -192,23 +167,12 @@ def create_task(name, assigned, duration, description):
     except Exception:
         return False
 
-<<<<<<< HEAD
 # @app.route('/create_team', methods=['POST'])
 # def team_creator():
 #     name = request.json.get('name')
 #     if name is not None:
 #         if create_team(name):
 #             return make_response(jsonify({'message': 'Team created'}), 200)
-=======
-
-@app.route('/create_team', methods=['POST'])
-def team_creator():
-    name = request.json.get('name')
-    if name is not None:
-        if create_team(name):
-            return make_response(jsonify({'message': 'Team created'}), 200)
->>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
-
 
 @app.route('/create_user_details', methods=['POST'])
 def user_detail_creator():
@@ -221,12 +185,7 @@ def user_detail_creator():
 
     return make_response(jsonify({}), 400)
 
-<<<<<<< HEAD
 @app.route('/create_habit', methods=['POST'])
-=======
-
-@app.route('/create_habit', method=['POST'])
->>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 def habit_creator():
     name = request.json.get('name')
     start_time = request.json.get('start_time')
