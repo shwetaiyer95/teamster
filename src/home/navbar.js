@@ -33,7 +33,7 @@ const NavigationBar = ({userId,isAdmin}) => {
       <div style={{ width: 240 , marginRight: 10}}>
       <Sidenav defaultOpenKeys={['3', '4']}>
         <Sidenav.Header>
-          <div style={headerStyles}>Teamster</div>
+          <div style={headerStyles}><h4>Teamster</h4></div>
         </Sidenav.Header>
         <Sidenav.Body>
           <Nav activeKey="1" style={{height: 900}}>
