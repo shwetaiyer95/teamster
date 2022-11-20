@@ -44,9 +44,9 @@ def authenticate(email, password):
 def login():
     if request.json and 'email' in request.json and request.json['email'] != '' and 'password' in request.json \
             and request.json['password'] != '':
-        userid, userType = authenticate(request.json['email'], request.json['password'])
-        if userid and userType:
-            return make_response(jsonify({'message': 'Login successful', 'userid': userid, 'usertype': userType}), 200)
+        userid, user_type = authenticate(request.json['email'], request.json['password'])
+        if userid and user_type:
+            return make_response(jsonify({'message': 'Login successful', 'userid': userid, 'usertype': user_type}), 200)
     return make_response(jsonify({}), 400)
 
 
