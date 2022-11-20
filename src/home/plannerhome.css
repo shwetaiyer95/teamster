@@ -1,0 +1,17 @@
+.titlebar {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.titlebarname {
+    font-weight: bold;
+    font-size: 21px;
+    margin-bottom: 0px !important;
+    padding: 10px;
+}
+
+.meetingWrapper {
+    width: 100%;
+    padding: 10px;
+}
