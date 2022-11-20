@@ -46,7 +46,7 @@ export const Meetings = () => {
                 <p className="titlebarname">
                 Here are your meetings!
                 </p>
-                <Button variant="primary" onClick={() => routeChange("/createMeeting")}>Create Meeting</Button>
+                <Button variant="primary" onClick={() => routeChange(`/home/createMeeting/${userId}`)}>Create Meeting</Button>
             </div>
 
             <div className="cardsWrapperMeetings">
