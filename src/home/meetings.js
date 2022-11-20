@@ -1,7 +1,11 @@
 import CardComponent from "./cardComponent"
 import './cardComponent.css'
+import Button from 'react-bootstrap/Button';
+import './meetings.css'
+import { useNavigate } from "react-router-dom";
 
 export const Meetings = (id, summary, description, link) => {
+
     const caldata = [{'kind': 'calendar#event', 
     'etag': '"3337796069736000"', 
     'id': 'g0e7hltjtthhrrsah9djahpp2k_20221119T160000Z', 
@@ -16,13 +20,27 @@ export const Meetings = (id, summary, description, link) => {
         return <CardComponent key={id} title={summary} subtitle={duration} text={description} links={htmlLink}></CardComponent>
     }
 
+    const navigate = useNavigate();
+    const routeChange = (path) =>{
+        navigate(path)
+    }
+
     return (
-        <div className="cardDiv">
-            {caldata.map(event => {
-                console.log(event.summary)
-                console.log(event.description)
-                return getEventCard(event.id, event.summary, `${event.start.dateTime} - ${event.end.dateTime}`,event.description, event.htmlLink)
-            })}
+        <div>
+            <div className="titlebar">
+                <p className="titlebarname">
+                Welcome!,
+                </p>
+                <Button variant="success" onClick={() => routeChange("/createMeeting")}>Create Meeting</Button>
+            </div>
+
+            <div>
+                {caldata.map(event => {
+                    console.log(event.summary)
+                    console.log(event.description)
+                    return getEventCard(event.id, event.summary, `${event.start.dateTime} - ${event.end.dateTime}`,event.description, event.htmlLink)
+                })}
+            </div>
         </div>
     )
 }

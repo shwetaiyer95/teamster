@@ -145,8 +145,8 @@ const Config = ({funcNav}) => {
 
     return (
     <div class = "cardDiv">
-    <CardComponent handleModalOpen = {handleUserCrateModalOpen} title = "Create user" subtitle= "Add users in your team" links={[{name: "Create user",link:"link"}]}></CardComponent>
-    <CardComponent handleModalOpen = {handleTeamCreateModalOpen} title = "Create team" subtitle= "Add teams in your project"  links={[{name: "Create team",link:"link"}]}></CardComponent>
+    <CardComponent handleModalOpen = {handleUserCrateModalOpen} title = "Create user" subtitle= "Add users in your team" link="Create user"></CardComponent>
+    <CardComponent handleModalOpen = {handleTeamCreateModalOpen} title = "Create team" subtitle= "Add teams in your project"  link="Create team"></CardComponent>
     {/* <CardComponent  handleModalOpen = {handleWorkPermissionsModalOpen} title = "Work permissions" subtitle= "Add work permissions for your users" links={[{name: "Work Permission",link:"link"}]}></CardComponent> */}
     <Modal show={showUserCreate} onHide={handleUserCreatModalClose}>
         <Modal.Header closeButton>

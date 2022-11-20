@@ -13,6 +13,9 @@ import { Meetings } from './home/meetings';
 import Home from "./home/home"
 import NavigationBar from "./home/navbar"
 import Config from "./home/config"
+import { CreateMeeting } from './home/createMeeting';
+
+
 function App() {
 
   const [showNav, setShowNav] = useState(false);
@@ -28,7 +31,7 @@ function App() {
         <Route path="/config" element={<Config funcNav={setShowNav}/>}  />
         <Route path="/Registration" element={<Registration funcNav={setShowNav}/>}  />
         <Route path="/teams" element={<Meetings funcNav={setShowNav}/>} />
-        
+        <Route path="/createMeeting" element={<CreateMeeting/>} />
         </Routes>
         </div>
       </Router>
