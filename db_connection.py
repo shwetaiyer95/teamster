@@ -263,8 +263,10 @@ def user_detail_creator():
     uid = request.json.get('uid')
     pom_start = request.json.get('pom_start')
     pom_end = request.json.get('pom_end')
-    if uid is not None and pom_start is not None and pom_end is not None:
-        if create_user_details(uid, pom_start, pom_end):
+    focus_time = request.json.get('focus_time')
+    break_time = request.json.get('break_time')
+    if uid is not None and pom_start is not None and pom_end is not None and focus_time is not None and break_time is not None:
+        if create_user_details(uid, focus_time, break_time, pom_start, pom_end):
             return make_response(jsonify({'message': 'User details created'}, 200))
 
     return make_response(jsonify({}), 400)
