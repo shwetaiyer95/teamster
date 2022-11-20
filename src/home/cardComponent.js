@@ -2,6 +2,7 @@ import { CCard, CCardBody, CCardSubtitle, CCardText, CCardLink, CCardTitle } fro
 import { Button } from '@mui/material';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import React from 'react';
+import './cardComponent.css'
 
 const CardComponent = ({title, subtitle, text, link, handleModalOpen}) => {
 
@@ -24,7 +25,7 @@ const CardComponent = ({title, subtitle, text, link, handleModalOpen}) => {
   }
 
   return (
-    <CCard style={{ width: '18rem', margin: 15 }}>
+    <CCard className="cardStyle">
       <CCardBody>
         <CCardTitle>{title}</CCardTitle>
         {subtitle && <CCardSubtitle className="mb-2 text-medium-emphasis">{subtitle}</CCardSubtitle>}

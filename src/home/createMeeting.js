@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-date-picker'
 import moment from 'moment';
 import './createMeeting.css';
+import Axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 export const CreateMeeting = () => {
     const [meetingData, setData] = useState({
@@ -97,30 +99,38 @@ export const CreateMeeting = () => {
           })
     }
 
-    const handleCreateMeetingSubmit = () => {
-        const toSend = {
-            'summary': meetingData.title,
-            'location': meetingData.location,
-            'description': meetingData.description,
-            'start': {
-                'dateTime': convertDate(meetingData.startDate, meetingData.startHour, meetingData.startMinute),
-                'timeZone': 'America/Los_Angeles',
-            },
-            'end': {
-                'dateTime': convertDate(meetingData.endDate, meetingData.endHour, meetingData.endMinute),
-                'timeZone': 'America/Los_Angeles',
-            },
-        }
-        console.log(toSend)
+    const navigate = useNavigate();
+    const routeChange = (path) =>{
+        navigate(path)
+    }
+
+    const handleCreateMeetingSubmit = (e) => {
+        e.preventDefault();
+        Axios.post('http://127.0.0.1:5000/create_event', 
+        {summary: meetingData.title, 
+            location:meetingData.location, 
+            description: meetingData.description, 
+            start: convertDate(meetingData.startDate, meetingData.startHour, meetingData.startMinute),
+            end: convertDate(meetingData.endDate, meetingData.endHour, meetingData.endMinute),
+        })
+        .then((response) => {
+          console.log(response)
+          routeChange("/home/meeting")
+          alert("Meeting invite sent")
+        })
+        .catch((error) => {
+            if (error.response.status === 400) {
+                alert("Please enter all fields correctly")
+            }
+        })
     }
 
     const convertDate = (date, hour, minute) => {
-        // '2022-11-19T09:00:00-07:00'
         const newDate = date.toLocaleDateString("en-US")
         const newHour = hour%10 === 0 ? `0${hour.toString()}`: hour.toString()
         const newMinute = minute%10 === 0 ? `0${minute.toString()}`: minute.toString()
         const momentDate = moment(`${newDate}T${newHour}:${newMinute}`, 'MM/DD/YYYYTHH:mm').format('YYYY-MM-DDTHH:mm:ss');
-        return momentDate + `.0+000000`
+        return momentDate + `-07:00`
     }
 
     const getHours = (prefix) => {
@@ -143,7 +153,7 @@ export const CreateMeeting = () => {
         <div className="wrapperDiv">
             <div className="titlebar">
                 <p className="titlebarname">
-                Welcome!,
+                Create your meeting!
                 </p>
             </div>
             <div>

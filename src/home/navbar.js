@@ -13,7 +13,7 @@ const NavigationBar = ({adminuser}) => {
   const headerStyles = {
     padding: 20,
     fontSize: 16,
-    background: '#34c3ff',
+    background: '#321fdb',
     color: ' #fff'
   };
 
