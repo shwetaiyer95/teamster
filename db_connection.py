@@ -185,6 +185,16 @@ def create_task(name, assigned, duration, description):
     except Exception:
         return False
 
+def get_task(uid):
+    try:
+        conn = connect()
+        with conn.cursor() as cur:
+            sql = "SELECT taskID, name, duration, description FROM task WHERE assignedId='%s';" % (uid)
+            cur.execute(sql)
+            tasks = cur.fetchall()
+        return tasks
+    except Exception:
+        return False
 
 def generate_pomodoro_time_slots(uid):
     try:
@@ -289,7 +299,6 @@ def task_creator():
 
 @app.route('/register', methods=['POST'])
 def register():
-    print("reached")
     email = request.json.get('email')
     name = request.json.get('name')
     passwd = request.json.get('password')
@@ -297,6 +306,17 @@ def register():
     if email is not None and name is not None and passwd is not None and usertype is not None:
         if create_user(name, email, passwd, usertype):
             return make_response(jsonify({'message': 'User created'}), 200)
+
+    return make_response(jsonify({}), 400)
+
+@app.route('/get_tasks/<string:uid>')
+def method_task(uid):
+    if uid and uid!= '':
+        tasks = get_task(uid)
+        if tasks:
+            return make_response(jsonify({'tasks': tasks}), 200)
+        else:
+            return make_response(jsonify({'tasks': []}), 200)
 
     return make_response(jsonify({}), 400)
 
