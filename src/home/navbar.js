@@ -42,10 +42,10 @@ const NavigationBar = ({adminuser}) => {
               })
             }
             
-            <Nav.Item eventKey="100">
+            <Nav.Item eventKey="100" onClick={() => routeChange("/planner")}>
               Planner
             </Nav.Item>
-            <Nav.Item eventKey="200">
+            <Nav.Item eventKey="200" onClick={() => routeChange("/home/config")}>
               Admin Configutaion
             </Nav.Item>
           </Nav>

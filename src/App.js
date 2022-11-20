@@ -15,6 +15,8 @@ import NavigationBar from "./home/navbar"
 import Config from "./home/config"
 import { CreateMeeting } from './home/createMeeting';
 import Tasks from "./home/tasks"
+import { PlannerHome } from './home/plannerhome';
+
 
 function App() {
 
@@ -31,8 +33,9 @@ function App() {
         <Route path="/home/config" element={<Config />}  />
         <Route path="/Registration" element={<Registration />}  />
         <Route path="/home/meeting" element={<Meetings />} />
-        <Route path="/home/createMeeting" element={<CreateMeeting />} />
         <Route path="/home/tasks" element={<Tasks />} />
+        <Route path="/createMeeting" element={<CreateMeeting />} />
+        <Route path="/planner" element={<PlannerHome />} />
         </Routes>
         </div>
       </Router>

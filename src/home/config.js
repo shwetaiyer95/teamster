@@ -166,7 +166,7 @@ const Config = () => {
             {createTeamsForm()}
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={handleTeamCreateModalClose}>
+            <Button variant="primary" onClick={handleTeamCreateModalClose}>
                 Close
             </Button>
         </Modal.Footer>

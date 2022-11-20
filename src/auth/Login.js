@@ -26,7 +26,7 @@ export function Login({funcNav}){
             routeChange(`./home/config`)
           }
           else{
-            routeChange(`./home/createMeeting`)
+            routeChange(`./createMeeting`)
           }
           
         })

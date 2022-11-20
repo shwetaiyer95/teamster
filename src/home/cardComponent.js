@@ -1,5 +1,5 @@
 import { CCard, CCardBody, CCardSubtitle, CCardText, CCardLink, CCardTitle } from '@coreui/react';
-import { Button } from '@mui/material';
+import Button from 'react-bootstrap/Button';
 import '@coreui/coreui/dist/css/coreui.min.css'
 import React from 'react';
 import './cardComponent.css'
@@ -9,8 +9,8 @@ const CardComponent = ({title, subtitle, text, link, handleModalOpen}) => {
   const getButton = (name) => {
     return (
       <div>
-      <Button onClick = {wrapHandleModalOpen} class='button'>{name}</Button>
-    </div>
+        <Button onClick = {wrapHandleModalOpen} className='custombutton'>{name}</Button>
+      </div>
     )
   }
 
