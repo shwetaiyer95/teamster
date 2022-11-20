@@ -18,8 +18,6 @@ const NavigationBar = ({adminuser}) => {
   };
 
   const getTeamNav = (id, name) => {
-    console.log(id)
-    console.log(name)
     return (
       <Nav.Menu eventKey={id} title={name}>
         <Nav.Item eventKey={`${id}-1`} onClick={() => routeChange("/tasks")}>Tasks</Nav.Item>
