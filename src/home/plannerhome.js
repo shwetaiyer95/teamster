@@ -20,8 +20,8 @@ export const PlannerHome = () => {
     
     useEffect(() => {
         const newTime = time
-        newTime.setSeconds(time.getSeconds() + 10)
-        setTime(newTime); // 10 minutes timer
+        newTime.setSeconds(time.getSeconds() + focusTime*60)
+        setTime(newTime); // 2 minutes timer
     },[])
 
     const handleUpdatePomodoroModalOpen = () => {
