@@ -234,7 +234,8 @@ def get_focus_break_time(uid):
             cur.execute(sql)
             focus_time, break_time  = cur.fetchall()[0]
         return focus_time, break_time
-    except Exception:
+    except Exception as e:
+        print(e)
         return False
 
 # Left to do
