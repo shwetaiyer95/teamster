@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.appContainer{
+  display: flex;
+  flex-direction: row;
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.zerowidth {
+
+}

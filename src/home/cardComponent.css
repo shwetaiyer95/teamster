@@ -1,9 +1,21 @@
 .cardDiv {
     display: flex !important;
+    align-items: start;
 }
 
 .button{
     background-color: aquamarine;
     border: 5px;
     padding: 5px;
+}
+
+.cardStyle {
+    width: 18rem;
+    height: 172px;
+    margin: 15px;
+    display: inline-block;
+}
+
+.cardsWrapperMeetings {
+    display: flex;
 }

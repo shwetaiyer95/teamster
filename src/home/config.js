@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CardComponent from "./cardComponent"
 import Axios from "axios"
 import "./cardComponent.css"
 import { Button, Form, FormCheck, Modal } from 'react-bootstrap';
-const Config = ({title, subtitle, text, links}) => {
+const Config = () => {
     const [showUserCreate, setShowUserCreate] = useState(false);
     const [showTeamCreate, setShowTeamCreate] = useState(false);
     const [showWorkPermission, setShowWorkPermission] = useState(false);
@@ -19,7 +19,6 @@ const Config = ({title, subtitle, text, links}) => {
         { value: 'America/Denver', text: "America/Denver" },
         { value: 'America/Los_Angeles', text: "America/Los_Angeles" }
         ]
-
 
     const handleTimeZone = e => { 
         setTimeZone(e.target.value);
@@ -142,8 +141,8 @@ const Config = ({title, subtitle, text, links}) => {
 
     return (
     <div class = "cardDiv">
-    <CardComponent handleModalOpen = {handleUserCrateModalOpen} title = "Create user" subtitle= "Add users in your team" links={[{name: "Create user",link:"link"}]}></CardComponent>
-    <CardComponent handleModalOpen = {handleTeamCreateModalOpen} title = "Create team" subtitle= "Add teams in your project"  links={[{name: "Create team",link:"link"}]}></CardComponent>
+    <CardComponent handleModalOpen = {handleUserCrateModalOpen} title = "Create user" subtitle= "Add users in your team" link="Create user"></CardComponent>
+    <CardComponent handleModalOpen = {handleTeamCreateModalOpen} title = "Create team" subtitle= "Add teams in your project"  link="Create team"></CardComponent>
     {/* <CardComponent  handleModalOpen = {handleWorkPermissionsModalOpen} title = "Work permissions" subtitle= "Add work permissions for your users" links={[{name: "Work Permission",link:"link"}]}></CardComponent> */}
     <Modal show={showUserCreate} onHide={handleUserCreatModalClose}>
         <Modal.Header closeButton>

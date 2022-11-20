@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -28,6 +30,29 @@ CORS(app)
 def connect():
     conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, database=DBNAME)
     return conn
+
+
+def authenticate(email, password):
+    try:
+        conn = connect()
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT userid,userType FROM user_table WHERE email = '%s' AND password = '%s';" % (email, password))
+            res = cur.fetchone()
+            return res[0], res[1]
+    except Exception:
+        return 0
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    if request.json and 'email' in request.json and request.json['email'] != '' and 'password' in request.json \
+            and request.json['password'] != '':
+        result = authenticate(request.json['email'], request.json['password'])
+        userid, user_type = result[0], result[1]
+        if userid and user_type:
+            return make_response(jsonify({'message': 'Login successful', 'userid': userid, 'usertype': user_type}), 200)
+    return make_response(jsonify({}), 400)
 
 
 def create_credentials(credentials_file: str):
@@ -71,7 +96,8 @@ def create_team(name, summary, time_zone):
         with conn.cursor() as cur:
             creds = create_credentials("credentials.json")
             calendar_id = create_calendar(creds, summary, time_zone)
-            sql = "INSERT INTO team(teamID, teamName, calendar, timezone) values(UUID(),'%s','%s','%s');" % (name, calendar_id, time_zone)
+            sql = "INSERT INTO team(teamID, teamName, calendar, timezone) values(UUID(),'%s','%s','%s');" % (
+                name, calendar_id, time_zone)
             cur.execute(sql)
             conn.commit()
             return True
@@ -93,6 +119,7 @@ def team_creator():
             return make_response(jsonify({'message': 'Team created'}), 200)
     return make_response(jsonify({}), 400)
 
+
 def create_user(name, email, passwd, usertype):
     try:
         conn = connect()
@@ -106,23 +133,13 @@ def create_user(name, email, passwd, usertype):
         print(e)
         return False
 
-# def create_team(name):
-#     try:
-#         conn = connect()
-#         with conn.cursor() as cur:
-#             sql = "INSERT INTO team(teamID, teamName) values(UUID(),'%s');" % (name)
-#             cur.execute(sql)
-#             conn.commit()
-#             return True
-#     except Exception:
-#         return False
-
 
 def create_user_details(uid, focus_time, break_time, pom_start, pom_end):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            sql = "INSERT INTO user_detail(userid, focus_time, break_time, start_time, end_time) values('%s', '%s', '%s');" % (uid, focus_time, break_time, pom_start, pom_end)
+            sql = "INSERT INTO user_detail(userid, focus_time, break_time, start_time, end_time) values('%s', '%s', '%s');" % (
+                uid, focus_time, break_time, pom_start, pom_end)
             cur.execute(sql)
             conn.commit()
             return True
@@ -168,6 +185,7 @@ def create_task(name, assigned, duration, description):
     except Exception:
         return False
 
+<<<<<<< HEAD
 def get_task(uid):
     try:
         conn = connect()
@@ -178,6 +196,8 @@ def get_task(uid):
         return tasks
     except Exception:
         return False
+=======
+>>>>>>> 27d4f6018fc14ed98d93cb775495f6a6d06daa8a
 
 def generate_pomodoro_time_slots(uid):
     try:
@@ -206,6 +226,7 @@ def generate_pomodoro_time_slots(uid):
     except Exception:
         return False
 
+
 # Left to do
 @app.route('/get_pomodoro_time_slots', methods=['POST'])
 def get_pomodoro_time_slots():
@@ -216,12 +237,29 @@ def get_pomodoro_time_slots():
         return make_response(jsonify({'slots': time_slots}), 200)
 
 
-# @app.route('/create_team', methods=['POST'])
-# def team_creator():
-#     name = request.json.get('name')
-#     if name is not None:
-#         if create_team(name):
-#             return make_response(jsonify({'message': 'Team created'}), 200)
+def get_events(creds):
+    service = build('calendar', 'v3', credentials=creds)
+    now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    print('Getting the upcoming 10 events')
+    events_result = service.events().list(calendarId='primary', timeMin=now,
+                                          maxResults=10, singleEvents=True,
+                                          orderBy='startTime').execute()
+    events = events_result.get('items', [])
+
+    if not events:
+        print('No upcoming events found.')
+        return make_response(jsonify([]), 400)
+
+    return events
+
+
+@app.route('/get_events')
+def note_getter():
+    events = get_events(create_credentials("credentials.json"))
+    if events:
+        return make_response(jsonify({'events': events}), 200)
+    return make_response(jsonify({}), 400)
+
 
 @app.route('/create_user_details', methods=['POST'])
 def user_detail_creator():
@@ -233,6 +271,7 @@ def user_detail_creator():
             return make_response(jsonify({'message': 'User details created'}, 200))
 
     return make_response(jsonify({}), 400)
+
 
 @app.route('/create_habit', methods=['POST'])
 def habit_creator():
@@ -283,6 +322,51 @@ def method_task(uid):
             return make_response(jsonify({'tasks': []}), 200)
 
     return make_response(jsonify({}), 400)
+
+
+def create_event(creds, summary, location, description, start, end):
+    service = build('calendar', 'v3', credentials=creds)
+    event = {
+        'summary': summary,
+        'location': location,
+        'description': description,
+        'start': {
+            'dateTime': start,
+            'timeZone': 'America/Los_Angeles',
+        },
+        'end': {
+            'dateTime': end,
+            'timeZone': 'America/Los_Angeles',
+        },
+        'reminders': {
+            'useDefault': False,
+            'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+            ],
+        },
+    }
+    event = service.events().insert(calendarId='primary', body=event).execute()
+    return event.get('htmlLink')
+
+
+@app.route('/create_event', methods=['POST'])
+def event_creator():
+    req = request.json
+    # summary = "test event"
+    summary = req["summary"]
+    # location ="800 Howard St., San Francisco, CA 94103"
+    location = req["location"]
+    # description = 'A chance to hear more about Google\'s developer products.'
+    description = req["description"]
+    # start = '2022-11-19T09:00:00-07:00'
+    start = req["start"]
+    # end = '2022-11-19T17:00:00-07:00'
+    end = req["end"]
+
+    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    event_link = create_event(creds, summary, location, description, start, end)
+    return make_response(jsonify({'event': event_link}), 200)
 
 
 if __name__ == '__main__':

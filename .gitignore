@@ -9,6 +9,9 @@ Mac files
 # C extensions
 *.so
 
+#
+.idea/
+
 # Distribution / packaging
 .Python
 build/
@@ -132,3 +135,5 @@ dmypy.json
 .pyre/
 node_modules
 .DS_Store
+credentials.json
+token.json
