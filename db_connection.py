@@ -185,7 +185,6 @@ def create_task(name, assigned, duration, description):
     except Exception:
         return False
 
-<<<<<<< HEAD
 def get_task(uid):
     try:
         conn = connect()
@@ -196,8 +195,6 @@ def get_task(uid):
         return tasks
     except Exception:
         return False
-=======
->>>>>>> 27d4f6018fc14ed98d93cb775495f6a6d06daa8a
 
 def generate_pomodoro_time_slots(uid):
     try:
