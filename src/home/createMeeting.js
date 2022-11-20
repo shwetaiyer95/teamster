@@ -1,10 +1,10 @@
 import './meetings.css'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-date-picker'
 import moment from 'moment';
-import './createMeeting.css'
+import './createMeeting.css';
 
 export const CreateMeeting = () => {
     const [meetingData, setData] = useState({

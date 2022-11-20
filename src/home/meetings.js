@@ -3,7 +3,7 @@ import './cardComponent.css'
 import Button from 'react-bootstrap/Button';
 import './meetings.css'
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import React from 'react';
 
 export const Meetings = () => {
 

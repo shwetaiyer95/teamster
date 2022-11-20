@@ -1,6 +1,8 @@
 import { CCard, CCardBody, CCardSubtitle, CCardText, CCardLink, CCardTitle } from '@coreui/react';
 import { Button } from '@mui/material';
 import '@coreui/coreui/dist/css/coreui.min.css'
+import React from 'react';
+
 const CardComponent = ({title, subtitle, text, link, handleModalOpen}) => {
 
   const getButton = (name) => {

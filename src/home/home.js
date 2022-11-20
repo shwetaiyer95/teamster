@@ -1,6 +1,8 @@
 import NavigationBar from "./navbar"
 import "./home.css"
 import Config from "./config"
+import React from "react"
+
 const Home = () => {
 
     return(
