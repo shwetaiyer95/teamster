@@ -9,6 +9,9 @@ Mac files
 # C extensions
 *.so
 
+#
+.idea/
+
 # Distribution / packaging
 .Python
 build/

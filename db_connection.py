@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -34,9 +36,10 @@ def authenticate(email, password):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            cur.execute("SELECT userid,userType FROM user_table WHERE email = '%s' AND password = '%s';" % (email, password))
+            cur.execute(
+                "SELECT userid,userType FROM user_table WHERE email = '%s' AND password = '%s';" % (email, password))
             res = cur.fetchone()
-            return res[0],res[1]
+            return res[0], res[1]
     except Exception:
         return 0
 
@@ -46,7 +49,7 @@ def login():
     if request.json and 'email' in request.json and request.json['email'] != '' and 'password' in request.json \
             and request.json['password'] != '':
         result = authenticate(request.json['email'], request.json['password'])
-        userid, user_type = result[0],result[1]
+        userid, user_type = result[0], result[1]
         if userid and user_type:
             return make_response(jsonify({'message': 'Login successful', 'userid': userid, 'usertype': user_type}), 200)
     return make_response(jsonify({}), 400)
@@ -129,18 +132,6 @@ def create_user(name, email, passwd, usertype):
     except Exception as e:
         print(e)
         return False
-
-
-# def create_team(name):
-#     try:
-#         conn = connect()
-#         with conn.cursor() as cur:
-#             sql = "INSERT INTO team(teamID, teamName) values(UUID(),'%s');" % (name)
-#             cur.execute(sql)
-#             conn.commit()
-#             return True
-#     except Exception:
-#         return False
 
 
 def create_user_details(uid, focus_time, break_time, pom_start, pom_end):
@@ -233,12 +224,29 @@ def get_pomodoro_time_slots():
         return make_response(jsonify({'slots': time_slots}), 200)
 
 
-# @app.route('/create_team', methods=['POST'])
-# def team_creator():
-#     name = request.json.get('name')
-#     if name is not None:
-#         if create_team(name):
-#             return make_response(jsonify({'message': 'Team created'}), 200)
+def get_events(creds):
+    service = build('calendar', 'v3', credentials=creds)
+    now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    print('Getting the upcoming 10 events')
+    events_result = service.events().list(calendarId='primary', timeMin=now,
+                                          maxResults=10, singleEvents=True,
+                                          orderBy='startTime').execute()
+    events = events_result.get('items', [])
+
+    if not events:
+        print('No upcoming events found.')
+        return make_response(jsonify([]), 400)
+
+    return events
+
+
+@app.route('/get_events')
+def note_getter():
+    events = get_events(create_credentials("credentials.json"))
+    if events:
+        return make_response(jsonify({'events': events}), 200)
+    return make_response(jsonify({}), 400)
+
 
 @app.route('/create_user_details', methods=['POST'])
 def user_detail_creator():
