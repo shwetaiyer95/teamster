@@ -11,6 +11,8 @@ CREATE TABLE `user_table` (
 CREATE TABLE `team` (
   `teamID` varchar(45) NOT NULL,
   `teamName` varchar(45) DEFAULT NULL,
+  `calendar` varchar(45) NULL,
+  `timezone` varchar(45) NOT NULL,
   PRIMARY KEY (`teamID`)
   );
 

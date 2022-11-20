@@ -6,6 +6,7 @@ from googleapiclient.errors import HttpError
 
 from flask import Flask, request, jsonify
 from flask import make_response
+<<<<<<< HEAD
 from flask_cors import CORS
 import pymysql
 HOST = "teamster-db.cnxe9x6em0y0.us-east-1.rds.amazonaws.com"
@@ -14,16 +15,30 @@ USER = "admin_user"
 PASSWORD = "qYUxs1Y6b1I7JNGqR5u33z$"
 DBNAME = "teamster"
 import os
+=======
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+HOST = os.getenv("HOST")
+PORT = os.getenv("DB_PORT")
+USER = os.getenv("DB_USER")
+PASSWORD = os.getenv("USER_KEY")
+DBNAME = os.getenv("DB_NAME")
+
+>>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 app = Flask(__name__)
 CORS(app)
 
-connection = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, database=DBNAME)
 
 def connect():
     conn = pymysql.connect(host=HOST, port=PORT, user=USER, password=PASSWORD, database=DBNAME)
     return conn
 
 
+<<<<<<< HEAD
 def create_credentials(credentials_file: str):
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -86,11 +101,14 @@ def team_creator():
             return make_response(jsonify({'message': 'Team created'}), 200)
 
 
+=======
+>>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 def create_user(name, email, passwd, usertype):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            sql = "INSERT INTO user_table(userid, email, password, name, userType) values(UUID(), '%s','%s','%s', '%s');" % (email, passwd, name, usertype)
+            sql = "INSERT INTO user_table(userid, email, password, name, userType) values(UUID(), '%s','%s','%s', '%s');" % (
+                email, passwd, name, usertype)
             cur.execute(sql)
             conn.commit()
             return True
@@ -98,6 +116,7 @@ def create_user(name, email, passwd, usertype):
 
         return False
 
+<<<<<<< HEAD
 # def create_team(name):
 #     try:
 #         conn = connect()
@@ -108,6 +127,20 @@ def create_user(name, email, passwd, usertype):
 #             return True
 #     except Exception:
 #         return False
+=======
+
+def create_team(name):
+    try:
+        conn = connect()
+        with conn.cursor() as cur:
+            sql = "INSERT INTO team(teamID, teamName) values(UUID(),'%s');" % (name)
+            cur.execute(sql)
+            conn.commit()
+            return True
+    except Exception:
+        return False
+>>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
+
 
 def create_user_details(uid, pom_start, pom_end):
     try:
@@ -120,59 +153,80 @@ def create_user_details(uid, pom_start, pom_end):
     except Exception:
         return False
 
+
 def create_habits(name, start_time, end_time, recur_type):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            sql = "INSERT INTO habits(habitid, name, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (name, start_time, end_time, recur_type)
+            sql = "INSERT INTO habits(habitid, name, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (
+                name, start_time, end_time, recur_type)
             cur.execute(sql)
             conn.commit()
             return True
     except Exception:
         return False
+
 
 def create_meeting(name, start_time, end_time, recur_type):
     try:
         conn = connect()
         with conn.curosr() as cur:
-            sql = "INSERT INTO meeting_details(meetingID, name, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (name, start_time, end_time, recur_type)
+            sql = "INSERT INTO meeting_details(meetingID, name, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (
+                name, start_time, end_time, recur_type)
             cur.execute(sql)
             conn.commit()
             return True
     except Exception:
         return False
+
 
 def create_task(name, assigned, duration, description):
     try:
         conn = connect()
         with conn.curosr() as cur:
-            sql = "INSERT INTO task(taskID, name, duration, description, assigned) values(UUID(), '%s', '%s', '%s', '%s');" % (name, duration, description, assigned)
+            sql = "INSERT INTO task(taskID, name, duration, description, assigned) values(UUID(), '%s', '%s', '%s', '%s');" % (
+                name, duration, description, assigned)
             cur.execute(sql)
             conn.commit()
             return True
     except Exception:
         return False
 
+<<<<<<< HEAD
 # @app.route('/create_team', methods=['POST'])
 # def team_creator():
 #     name = request.json.get('name')
 #     if name is not None:
 #         if create_team(name):
 #             return make_response(jsonify({'message': 'Team created'}), 200)
+=======
+
+@app.route('/create_team', methods=['POST'])
+def team_creator():
+    name = request.json.get('name')
+    if name is not None:
+        if create_team(name):
+            return make_response(jsonify({'message': 'Team created'}), 200)
+>>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
+
 
 @app.route('/create_user_details', methods=['POST'])
 def user_detail_creator():
-    uid, pom_start, pom_end
     uid = request.json.get('uid')
     pom_start = request.json.get('pom_start')
     pom_end = request.json.get('pom_end')
     if uid is not None and pom_start is not None and pom_end is not None:
         if create_user_details(uid, pom_start, pom_end):
             return make_response(jsonify({'message': 'User details created'}, 200))
-    
+
     return make_response(jsonify({}), 400)
 
+<<<<<<< HEAD
 @app.route('/create_habit', methods=['POST'])
+=======
+
+@app.route('/create_habit', method=['POST'])
+>>>>>>> 5852672ec5e720fb414d910d40d51cfbfcbd32e4
 def habit_creator():
     name = request.json.get('name')
     start_time = request.json.get('start_time')
@@ -181,7 +235,7 @@ def habit_creator():
     if name is not None and start_time is not None and end_time is not None and recur_type is not None:
         if create_habits(name, start_time, end_time, recur_type):
             return make_response(jsonify({'message': 'Habit created'}, 200))
-    
+
     return make_response(jsonify({}), 400)
 
 
@@ -195,7 +249,7 @@ def task_creator():
     if name is not None and assigned is not None and duration is not None and description is not None:
         if create_habits(name, assigned, duration, description):
             return make_response(jsonify({'message': 'Habit created'}, 200))
-    
+
     return make_response(jsonify({}), 400)
 
 
@@ -209,8 +263,9 @@ def register():
     if email is not None and name is not None and passwd is not None and usertype is not None:
         if create_user(name, email, passwd, usertype):
             return make_response(jsonify({'message': 'User created'}), 200)
-    
+
     return make_response(jsonify({}), 400)
+
 
 if __name__ == '__main__':
     app.run(host="localhost", port=5000, debug=True)
