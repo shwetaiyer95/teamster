@@ -30,6 +30,26 @@ def connect():
     return conn
 
 
+def authenticate(email, password):
+    try:
+        conn = connect()
+        with conn.cursor() as cur:
+            cur.execute("SELECT userid,userType FROM users WHERE email = '%s' AND password = '%s';" % (email, password))
+        return cur.fetchone()[0], cur.fetchone()[1]
+    except Exception:
+        return 0
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    if request.json and 'email' in request.json and request.json['email'] != '' and 'password' in request.json \
+            and request.json['password'] != '':
+        userid, userType = authenticate(request.json['email'], request.json['password'])
+        if userid and userType:
+            return make_response(jsonify({'message': 'Login successful', 'userid': userid, 'usertype': userType}), 200)
+    return make_response(jsonify({}), 400)
+
+
 def create_credentials(credentials_file: str):
     creds = None
     # The file token.json stores the user's access and refresh tokens, and is
@@ -71,7 +91,8 @@ def create_team(name, summary, time_zone):
         with conn.cursor() as cur:
             creds = create_credentials("credentials.json")
             calendar_id = create_calendar(creds, summary, time_zone)
-            sql = "INSERT INTO team(teamID, teamName, calendar, timezone) values(UUID(),'%s','%s','%s');" % (name, calendar_id, time_zone)
+            sql = "INSERT INTO team(teamID, teamName, calendar, timezone) values(UUID(),'%s','%s','%s');" % (
+                name, calendar_id, time_zone)
             cur.execute(sql)
             conn.commit()
             return True
@@ -93,6 +114,7 @@ def team_creator():
             return make_response(jsonify({'message': 'Team created'}), 200)
     return make_response(jsonify({}), 400)
 
+
 def create_user(name, email, passwd, usertype):
     try:
         conn = connect()
@@ -105,6 +127,7 @@ def create_user(name, email, passwd, usertype):
     except Exception as e:
         print(e)
         return False
+
 
 # def create_team(name):
 #     try:
@@ -122,7 +145,8 @@ def create_user_details(uid, focus_time, break_time, pom_start, pom_end):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            sql = "INSERT INTO user_detail(userid, focus_time, break_time, start_time, end_time) values('%s', '%s', '%s');" % (uid, focus_time, break_time, pom_start, pom_end)
+            sql = "INSERT INTO user_detail(userid, focus_time, break_time, start_time, end_time) values('%s', '%s', '%s');" % (
+                uid, focus_time, break_time, pom_start, pom_end)
             cur.execute(sql)
             conn.commit()
             return True
@@ -168,6 +192,7 @@ def create_task(name, assigned, duration, description):
     except Exception:
         return False
 
+
 def generate_pomodoro_time_slots(uid):
     try:
         conn = connect()
@@ -194,6 +219,7 @@ def generate_pomodoro_time_slots(uid):
         return get_time_slots_with_conflicts(start, end, conflicts)
     except Exception:
         return False
+
 
 # Left to do
 @app.route('/get_pomodoro_time_slots', methods=['POST'])
@@ -222,6 +248,7 @@ def user_detail_creator():
             return make_response(jsonify({'message': 'User details created'}, 200))
 
     return make_response(jsonify({}), 400)
+
 
 @app.route('/create_habit', methods=['POST'])
 def habit_creator():
