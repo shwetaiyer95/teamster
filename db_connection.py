@@ -177,8 +177,11 @@ def create_task(name, assigned, duration, description):
     try:
         conn = connect()
         with conn.cursor() as cur:
+            sql = "SELECT userid FROM user_table WHERE name='%s';" % (assigned)
+            cur.execute(sql)
+            userid = cur.fetchone()[0]
             sql = "INSERT INTO task(taskId, name, duration, description, assignedId) values(UUID(), '%s', '%s', '%s', '%s');" % (
-                name, duration, description, assigned)
+                name, duration, description, userid)
             cur.execute(sql)
             conn.commit()
             return True
@@ -223,6 +226,16 @@ def generate_pomodoro_time_slots(uid):
     except Exception:
         return False
 
+def get_focus_break_time(uid):
+    try:
+        conn = connect()
+        with conn.cursor() as cur:
+            sql = "SELECT focus_time, break_time FROM user_detail WHERE userid='%s';" % (uid)
+            cur.execute(sql)
+            focus_time, break_time  = cur.fetchall()[0]
+        return focus_time, break_time
+    except Exception:
+        return False
 
 # Left to do
 @app.route('/get_pomodoro_time_slots', methods=['POST'])
@@ -293,7 +306,7 @@ def task_creator():
     duration = request.json.get('duration')
     description = request.json.get('description')
     if name is not None and assigned is not None and duration is not None and description is not None:
-        if create_habits(name, assigned, duration, description):
+        if create_task(name, assigned, duration, description):
             return make_response(jsonify({'message': 'Habit created'}, 200))
 
     return make_response(jsonify({}), 400)
@@ -319,6 +332,18 @@ def method_task(uid):
             return make_response(jsonify({'tasks': tasks}), 200)
         else:
             return make_response(jsonify({'tasks': []}), 200)
+
+    return make_response(jsonify({}), 400)
+
+
+@app.route('/get_focus_break_time/<string:uid>')
+def get_method_focus_break_time(uid):
+    if uid and uid!= '':
+        focus_time, break_time = get_focus_break_time(uid)
+        if focus_time:
+            return make_response(jsonify({'focus_time': focus_time, 'break_time': break_time}), 200)
+        else:
+            return make_response(jsonify({'focus_time': [], 'break_time': break_time}), 200)
 
     return make_response(jsonify({}), 400)
 
