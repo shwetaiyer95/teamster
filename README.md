@@ -12,8 +12,20 @@ Teamster solves problems by allowing tasks associated with project management se
 
 ## Accomplishments that we're proud of:
 
-* Using teamster technique to keep track of time you spend on your tasks.
-*
+* Using teamster we can keep track of time you spend on your tasks.
+* It helps you focus deeply in a short time on an important task.
+* It makes you more efficient since you start timing your tasks and also helps in managing daily habits.
+* It helps the team assign and manage tasks and provides efficient communication and feedback.
+* We learned new Technologies such as Pomodoro, Flask etc.
+* Once hosted, this app is online and can be accessed with any device(iPad, iPhone, Android, Web browser) which makes it user-friendly.
+
+## Challenges we ran into
+
+While it was not easy to put this together, here are few of the challenges we faced:
+
+* **Time management UI**: The project required many different types of components for the frontend to represent all the aspects of time and project management, and making them work was challenging.
+* **Integrating API**: The app required many different endpoints and thus needed to be integrated with each corresponding UI component.
+* **Generating Pomodoro time slots**: The app also needed to auto-generate time slots for focus and breaks for each user, considering the conflicts created by their habits and other scheduled meetings.
 
 ## Python instructions
 
