@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios"
 import { useNavigate, Link } from "react-router-dom";
 import './Login.css'
-export function Login(){
+export function Login({funcNav}){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -21,6 +21,7 @@ export function Login(){
         Axios.post(`${HOST}/login`, {email:email, password: password})
         .then((response) => {
           console.log(response)
+          funcNav(true)
           routeChange(`./home/config`)
         })
         .catch((error) => {

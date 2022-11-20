@@ -22,16 +22,16 @@ function App() {
   return (
 
     <Router>
-        <div className = "container">
+        <div className = {showNav? "container": "zerowidth"}>
         {   showNav &&
          <NavigationBar/>
         }
         <Routes>
-        <Route path="/" element={<Login />} />       
-        <Route path="/config" element={<Config funcNav={setShowNav}/>}  />
-        <Route path="/Registration" element={<Registration funcNav={setShowNav}/>}  />
-        <Route path="/teams" element={<Meetings funcNav={setShowNav}/>} />
-        <Route path="/createMeeting" element={<CreateMeeting/>} />
+        <Route path="/" element={<Login funcNav={setShowNav}/>} />       
+        <Route path="/config" element={<Config />}  />
+        <Route path="/Registration" element={<Registration />}  />
+        <Route path="/teams" element={<Meetings />} />
+        <Route path="/createMeeting" element={<CreateMeeting />} />
         </Routes>
         </div>
       </Router>

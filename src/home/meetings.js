@@ -3,8 +3,9 @@ import './cardComponent.css'
 import Button from 'react-bootstrap/Button';
 import './meetings.css'
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-export const Meetings = (id, summary, description, link) => {
+export const Meetings = () => {
 
     const caldata = [{'kind': 'calendar#event', 
     'etag': '"3337796069736000"', 
