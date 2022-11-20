@@ -116,7 +116,7 @@ export const CreateMeeting = () => {
         })
         .then((response) => {
           console.log(response)
-          routeChange("/home/meeting")
+          routeChange(`/home/meeting/${userId}`)
           alert("Meeting invite sent")
         })
         .catch((error) => {
