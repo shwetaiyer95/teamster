@@ -239,7 +239,6 @@ def get_focus_break_time(uid):
             focus_time, break_time  = cur.fetchall()[0]
         return focus_time, break_time
     except Exception as e:
-        print(e)
         return False
 
 # Left to do
@@ -351,7 +350,8 @@ def method_task(uid):
 @app.route('/get_focus_break_time/<string:uid>')
 def get_method_focus_break_time(uid):
     if uid and uid!= '':
-        focus_time, break_time = get_focus_break_time(uid)
+        values = get_focus_break_time(uid)
+        focus_time, break_time = values[0], values[1]
         if focus_time:
             return make_response(jsonify({'focus_time': focus_time, 'break_time': break_time}), 200)
         else:
