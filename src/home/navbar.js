@@ -27,7 +27,7 @@ const NavigationBar = ({userId,isAdmin}) => {
     )
   }
   
-  const teams = [{name: "team 1"}, {name: "team 2"}, {name: "team3"}]
+  const teams = [{name: "Teaster SDE team"}, {name: "Capstone team"}]
 
     return (
       <div style={{ width: 240 , marginRight: 10}}>
