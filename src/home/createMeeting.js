@@ -7,8 +7,9 @@ import moment from 'moment';
 import './createMeeting.css';
 import Axios from "axios"
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from 'react-router-dom';
 export const CreateMeeting = () => {
+    const { userId } = useParams();
     const [meetingData, setData] = useState({
         title: "",
         description: "",

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Axios from "axios"
 import { useNavigate, Link } from "react-router-dom";
 import './Login.css'
-export function Login({funcNav}){
+export function Login({funcNav,setId, setAdmin}){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -20,18 +20,21 @@ export function Login({funcNav}){
           };
         Axios.post(`${HOST}/login`, {email:email, password: password})
         .then((response) => {
-          console.log(response)
           funcNav(true)
+          setId(response.data.userid)
           if(response.data.usertype == "admin"){
-            routeChange(`./home/config`)
+            setAdmin(true)
+            console.log(response.data.userid)
+            routeChange(`/home/config/${response.data.userid}`)
           }
           else{
-            routeChange(`./createMeeting`)
+            console.log(response.data.userid)
+            routeChange(`/home/createMeeting/${response.data.userid}`)
           }
           
         })
         .catch((error) => {
-            const data = error.response.data
+            console.log(error)
             if (error.response.status === 400) {
                 alert("User not found with the given email or password")
             }else {

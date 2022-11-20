@@ -3,8 +3,9 @@ import CardComponent from "./cardComponent"
 import './cardComponent.css'
 import { Modal, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-
+import { useParams } from 'react-router-dom';
 export const PlannerHome = () => {
+    const { userId } = useParams();
     const [isPomodoroModalOpen, setIsPomodoroModalOpen] = useState(false)
     const [focusTime, setFocusTime] = useState(0)
     const [breakTime, setBreakTime] = useState(0)

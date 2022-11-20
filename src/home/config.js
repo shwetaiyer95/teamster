@@ -3,7 +3,9 @@ import CardComponent from "./cardComponent"
 import Axios from "axios"
 import "./cardComponent.css"
 import { Button, Form, FormCheck, Modal } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 const Config = () => {
+    const { userId } = useParams();
     const [showUserCreate, setShowUserCreate] = useState(false);
     const [showTeamCreate, setShowTeamCreate] = useState(false);
     const [showWorkPermission, setShowWorkPermission] = useState(false);

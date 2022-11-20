@@ -8,6 +8,8 @@ import CardComponent from "./cardComponent"
 import Table from 'react-bootstrap/Table';
 import { Button, Form, FormCheck, Modal } from 'react-bootstrap';
 import Axios from "axios"
+import { useParams } from 'react-router-dom';
+
 export default function Tasks() {
   const [showTaskCreate, setShowTaskCreate] = useState(false);
   const [tasks, setTasks] = useState([]);
@@ -16,7 +18,7 @@ export default function Tasks() {
   const [assigned, setAssigned] = useState("");
   const back = [{"id": 1, "title": "first task", "subtitle": "first subtitle", "text": "backlog"}]
   const HOST = "http://127.0.0.1:5000";
-  
+  const { userId } = useParams();
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -32,21 +34,22 @@ export default function Tasks() {
     return <CardComponent key={id} title={title} subtitle={summary} ></CardComponent>
 }
 const fetchTasks = async () => {
-    getTasks(1);
+    getTasks(userId);
 };
-  const getTasks = (uid) => {
-    
-    Axios.get(`${HOST}/get_tasks/${uid}`)
-    .then((response) => {
-        setTasks(response.data.notes);
+const getTasks = (uid) => {
+
+Axios.get(`${HOST}/get_tasks/${uid}`)
+.then((response) => {
+    console.log(response.data)
+    // setTasks(response.data.notes);
+})
+.catch((error) => {
+    const data = error.response.data
+    if (error.response.status === 400) {
+        console.log("comething went wrong")
+    }
     })
-    .catch((error) => {
-        const data = error.response.data
-        if (error.response.status === 400) {
-            console.log("comething went wrong")
-        }
-      })
-  };
+};
 
   const handleTaskCreateSubmit = (e) => {
     e.preventDefault();

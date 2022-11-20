@@ -3,7 +3,7 @@ import { Sidenav, Nav } from 'rsuite';
 import './navbar.css';
 import { useNavigate } from "react-router-dom";
 
-const NavigationBar = ({adminuser}) => {
+const NavigationBar = ({userId,isAdmin}) => {
   // TODO: Call api for teams
   const navigate = useNavigate();
     const routeChange = (path) =>{
@@ -20,9 +20,9 @@ const NavigationBar = ({adminuser}) => {
   const getTeamNav = (id, name) => {
     return (
       <Nav.Menu eventKey={id} title={name}>
-        <Nav.Item eventKey={`${id}-1`} onClick={() => routeChange("/tasks")}>Tasks</Nav.Item>
+        <Nav.Item eventKey={`${id}-1`} onClick={() => routeChange(`/home/tasks/${userId}`)}>Tasks</Nav.Item>
         <Nav.Item eventKey={`${id}-2`} onClick={() => routeChange("/tasks")}>Teamboard</Nav.Item>
-        <Nav.Item eventKey={`${id}-3`} onClick={() => routeChange("home/meeting")}>Meetings</Nav.Item>
+        <Nav.Item eventKey={`${id}-3`} onClick={() => routeChange(`/home/meeting/${userId}`)}>Meetings</Nav.Item>
       </Nav.Menu>
     )
   }
@@ -42,10 +42,10 @@ const NavigationBar = ({adminuser}) => {
               })
             }
             
-            <Nav.Item eventKey="100" onClick={() => routeChange("/planner")}>
+            <Nav.Item eventKey="100" onClick={() => routeChange(`/home/plannerhome/${userId}`)}>
               Planner
             </Nav.Item>
-            <Nav.Item eventKey="200" onClick={() => routeChange("/home/config")}>
+            <Nav.Item eventKey="200" onClick={() => routeChange(`/home/config/${userId}`)}>
               Admin Configutaion
             </Nav.Item>
           </Nav>
