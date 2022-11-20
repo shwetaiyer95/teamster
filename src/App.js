@@ -14,11 +14,11 @@ import Home from "./home/home"
 import NavigationBar from "./home/navbar"
 import Config from "./home/config"
 import { CreateMeeting } from './home/createMeeting';
-
+import Tasks from "./home/tasks"
 
 function App() {
 
-  const [showNav, setShowNav] = useState(false);
+  const [showNav, setShowNav] = useState(true);
   return (
 
     <Router>
@@ -30,9 +30,9 @@ function App() {
         <Route path="/" element={<Login funcNav={setShowNav}/>} />       
         <Route path="/home/config" element={<Config />}  />
         <Route path="/Registration" element={<Registration />}  />
-        {/* <Route path="/home/tasks" element={<Tasks />} /> */}
         <Route path="/home/meeting" element={<Meetings />} />
-        <Route path="/createMeeting" element={<CreateMeeting />} />
+        <Route path="/home/createMeeting" element={<CreateMeeting />} />
+        <Route path="/home/tasks" element={<Tasks />} />
         </Routes>
         </div>
       </Router>
