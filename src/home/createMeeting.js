@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-date-picker'
+import moment from 'moment';
 
 export const CreateMeeting = () => {
     const [meetingData, setData] = useState({
@@ -87,21 +88,43 @@ export const CreateMeeting = () => {
     // }
 
     const handleCreateMeetingSubmit = () => {
-        
+        const toSend = {
+            'summary': meetingData.title,
+            'location': meetingData.location,
+            'description': meetingData.description,
+            'start': {
+                'dateTime': convertDate(meetingData.startDate, meetingData.startHour, meetingData.startMinute),
+                'timeZone': 'America/Los_Angeles',
+            },
+            'end': {
+                'dateTime': convertDate(meetingData.endDate, meetingData.endHour, meetingData.endMinute),
+                'timeZone': 'America/Los_Angeles',
+            },
+        }
+        console.log(toSend)
     }
 
-    const getHours = () => {
+    const convertDate = (date, hour, minute) => {
+        // '2022-11-19T09:00:00-07:00'
+        const newDate = date.toLocaleDateString("en-US")
+        const newHour = hour%10 === 0 ? `0${hour.toString()}`: hour.toString()
+        const newMinute = minute%10 === 0 ? `0${minute.toString()}`: minute.toString()
+        const momentDate = moment(`${newDate}T${newHour}:${newMinute}`, 'MM/DD/YYYYTHH:mm').format('YYYY-MM-DDTHH:mm:ss');
+        return momentDate + `.0+000000`
+    }
+
+    const getHours = (prefix) => {
         const hoursList = []
         for (let i = 0; i < 24; i++) {
-            hoursList.push(<option value={i}>{i.toString()}</option>)
+            hoursList.push(<option key={prefix+i} value={i}>{i.toString()}</option>)
         } 
         return hoursList
     }
 
-    const getMinutes = () => {
+    const getMinutes = (prefix) => {
         const minutesList = []
         for (let i = 0; i < 59; i++) {
-            minutesList.push(<option value={i}>{i.toString()}</option>)
+            minutesList.push(<option key={prefix+i} value={i}>{i.toString()}</option>)
         } 
         return minutesList
     }
@@ -113,7 +136,7 @@ export const CreateMeeting = () => {
                 Welcome!,
                 </p>
             </div>
-            <div className="flex">
+            <div>
                 <Form>
                     <div
                     className="detailsbox"
@@ -171,27 +194,27 @@ export const CreateMeeting = () => {
                             <Form.Group className="mb-3" controlId="formStartTime">
                                 <Form.Label>Start Time: </Form.Label>
                                 <select value={meetingData.startHour} onChange={(event) => handleStartHourChange(event.target.value)}>
-                                    {getHours()}
+                                    {getHours("s")}
                                 </select>
                                 <select value={meetingData.startMinute} onChange={(event) => handleStartMinuteChange(event.target.value)}>
-                                    {getMinutes()}
+                                    {getMinutes("s")}
                                 </select>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formEndTime">
                                 <Form.Label>End Time: </Form.Label>
                                 <select value={meetingData.endHour} onChange={(event) => handleEndHourChange(event.target.value)}>
-                                    {getHours()}
+                                    {getHours("e")}
                                 </select>
                                 <select value={meetingData.endMinute} onChange={(event) => handleEndMinuteChange(event.target.value)}>
-                                    {getMinutes()}
+                                    {getMinutes("e")}
                                 </select>
                             </Form.Group>
                         
                         
                     </div>
                     
-                    <Button variant="primary" type="submit" onclick = {handleCreateMeetingSubmit}>
+                    <Button variant="primary" type="submit" onClick = {handleCreateMeetingSubmit}>
                         Submit
                     </Button>
                     
