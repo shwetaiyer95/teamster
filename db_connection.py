@@ -301,5 +301,50 @@ def register():
     return make_response(jsonify({}), 400)
 
 
+def create_event(creds, summary, location, description, start, end):
+    service = build('calendar', 'v3', credentials=creds)
+    event = {
+        'summary': summary,
+        'location': location,
+        'description': description,
+        'start': {
+            'dateTime': start,
+            'timeZone': 'America/Los_Angeles',
+        },
+        'end': {
+            'dateTime': end,
+            'timeZone': 'America/Los_Angeles',
+        },
+        'reminders': {
+            'useDefault': False,
+            'overrides': [
+                {'method': 'email', 'minutes': 24 * 60},
+                {'method': 'popup', 'minutes': 10},
+            ],
+        },
+    }
+    event = service.events().insert(calendarId='primary', body=event).execute()
+    return event.get('htmlLink')
+
+
+@app.route('/create_event', methods=['POST'])
+def event_creator():
+    req = request.json
+    # summary = "test event"
+    summary = req["summary"]
+    # location ="800 Howard St., San Francisco, CA 94103"
+    location = req["location"]
+    # description = 'A chance to hear more about Google\'s developer products.'
+    description = req["description"]
+    # start = '2022-11-19T09:00:00-07:00'
+    start = req["start"]
+    # end = '2022-11-19T17:00:00-07:00'
+    end = req["end"]
+
+    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    event_link = create_event(creds, summary, location, description, start, end)
+    return make_response(jsonify({'event': event_link}), 200)
+
+
 if __name__ == '__main__':
     app.run(host="localhost", port=5000, debug=True)
