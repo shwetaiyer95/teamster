@@ -5,6 +5,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from flask import Flask, request, jsonify
+from pomodoro import get_time_slots_with_conflicts
 from flask import make_response
 from flask_cors import CORS
 import pymysql
@@ -117,11 +118,11 @@ def create_user(name, email, passwd, usertype):
 #         return False
 
 
-def create_user_details(uid, pom_start, pom_end):
+def create_user_details(uid, focus_time, break_time, pom_start, pom_end):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            sql = "INSERT INTO team(userid, start_time, end_time) values('%s', '%s', '%s');" % (uid, pom_start, pom_end)
+            sql = "INSERT INTO user_detail(userid, focus_time, break_time, start_time, end_time) values('%s', '%s', '%s');" % (uid, focus_time, break_time, pom_start, pom_end)
             cur.execute(sql)
             conn.commit()
             return True
@@ -133,7 +134,7 @@ def create_habits(name, start_time, end_time, recur_type):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            sql = "INSERT INTO habits(habitid, name, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (
+            sql = "INSERT INTO habits(habitId, habitName, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (
                 name, start_time, end_time, recur_type)
             cur.execute(sql)
             conn.commit()
@@ -145,7 +146,7 @@ def create_habits(name, start_time, end_time, recur_type):
 def create_meeting(name, start_time, end_time, recur_type):
     try:
         conn = connect()
-        with conn.curosr() as cur:
+        with conn.cursor() as cur:
             sql = "INSERT INTO meeting_details(meetingID, name, start_time, end_time, recurring) values(UUID(), '%s', '%s', '%s', '%s');" % (
                 name, start_time, end_time, recur_type)
             cur.execute(sql)
@@ -158,14 +159,51 @@ def create_meeting(name, start_time, end_time, recur_type):
 def create_task(name, assigned, duration, description):
     try:
         conn = connect()
-        with conn.curosr() as cur:
-            sql = "INSERT INTO task(taskID, name, duration, description, assigned) values(UUID(), '%s', '%s', '%s', '%s');" % (
+        with conn.cursor() as cur:
+            sql = "INSERT INTO task(taskId, name, duration, description, assignedId) values(UUID(), '%s', '%s', '%s', '%s');" % (
                 name, duration, description, assigned)
             cur.execute(sql)
             conn.commit()
             return True
     except Exception:
         return False
+
+def generate_pomodoro_time_slots(uid):
+    try:
+        conn = connect()
+        conflicts = []
+        with conn.cursor() as cur:
+            sql = "SELECT start_time, end_time FROM user_detail WHERE userid='%s';" % (uid)
+            cur.execute(sql)
+            start, end = cur.fetchall()[0]
+            sql = "SELECT meetingID FROM meeting_user WHERE user_id='%s';" % (uid)
+            cur.execute(sql)
+            meeting_ids = cur.fetchall()
+            for meeting in meeting_ids:
+                sql = "SELECT start_time, end_time FROM meeting_details WHERE meetingID='%s';" % (meeting)
+                start_time, end_time = cur.fetchall()[0]
+                conflicts.append([start_time, end_time])
+
+            sql = "SELECT habitId FROM user_habit WHERE user_id='%s';" % (uid)
+            cur.execute(sql)
+            habit_ids = cur.fetchall()
+            for habit_id in habit_ids:
+                sql = "SELECT start_time, end_time FROM habits WHERE habitId='%s';" % (habit_id)
+                start_time, end_time = cur.fetchall()[0]
+                conflicts.append([start_time, end_time])
+        return get_time_slots_with_conflicts(start, end, conflicts)
+    except Exception:
+        return False
+
+# Left to do
+@app.route('/get_pomodoro_time_slots', methods=['POST'])
+def get_pomodoro_time_slots():
+    userid = request.json.get('userid')
+
+    if userid is not None:
+        time_slots = generate_pomodoro_time_slots(uid=userid)
+        return make_response(jsonify({'slots': time_slots}), 200)
+
 
 # @app.route('/create_team', methods=['POST'])
 # def team_creator():
