@@ -33,7 +33,7 @@ export const Meetings = () => {
         const HOST = "http://127.0.0.1:5000";
         Axios.get(`${HOST}/get_events`)
         .then((response) => {
-            setcaldata(response.data);
+            setcaldata(response.data.events);
         })
         .catch((error) => {
             const data = error.response.data
@@ -53,7 +53,8 @@ export const Meetings = () => {
             </div>
 
             <div>
-                {caldata.map(event => {
+                {
+                caldata && caldata.map(event => {
                     // console.log(event.summary)
                     // console.log(event.description)
                     return getEventCard(event.id, event.summary, `${event.start.dateTime} - ${event.end.dateTime}`,event.description, event.htmlLink)
