@@ -2,6 +2,9 @@
 
 Teamster is the best way to track the workflow and manage the time of focus, break, habit, and meetings on top of the project management service and increasing the productivity of projects and maintaining the work-life balance of the working employee.
 
+## Inspiration
+According to a recent [study](https://www.zippia.com/advice/wasting-time-at-work-statistics/), 89% of workers say they waste at least 30 minutes of their time at work everyday. One of the contributing factors for decreased productivity, is improper tiem management. Sometimes while we ought to do something, resolve a problem or accomplish an objective, it could be very overwhelming, and we tend to procrastinate from time to time. However, when you split the time spent on your problem or goal into small segments, you will realize that it is easier than you think. This is where the Pomodoro technique is useful.
+
 ## What it does
 
 Teamster solves problems by allowing tasks associated with project management service and makes tracking time easier as the users are provided with timers in the Pomodoro technique. It also keeps the track of different user activities such as focus, break, habit, meetings and also manages board of messages from workforce in a fun and unique way.
