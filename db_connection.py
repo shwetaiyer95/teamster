@@ -34,8 +34,9 @@ def authenticate(email, password):
     try:
         conn = connect()
         with conn.cursor() as cur:
-            cur.execute("SELECT userid,userType FROM users WHERE email = '%s' AND password = '%s';" % (email, password))
-        return cur.fetchone()[0], cur.fetchone()[1]
+            cur.execute("SELECT userid,userType FROM user_table WHERE email = '%s' AND password = '%s';" % (email, password))
+            res = cur.fetchone()
+            return res[0],res[1]
     except Exception:
         return 0
 
@@ -44,7 +45,8 @@ def authenticate(email, password):
 def login():
     if request.json and 'email' in request.json and request.json['email'] != '' and 'password' in request.json \
             and request.json['password'] != '':
-        userid, user_type = authenticate(request.json['email'], request.json['password'])
+        result = authenticate(request.json['email'], request.json['password'])
+        userid, user_type = result[0],result[1]
         if userid and user_type:
             return make_response(jsonify({'message': 'Login successful', 'userid': userid, 'usertype': user_type}), 200)
     return make_response(jsonify({}), 400)

@@ -27,7 +27,7 @@ const NavigationBar = ({adminuser}) => {
   const teams = [{name: "team 1"}, {name: "team 2"}, {name: "team3"}]
 
     return (
-      <div style={{ width: 240 }}>
+      <div style={{ width: 240 , marginRight: 10}}>
       <Sidenav defaultOpenKeys={['3', '4']}>
         <Sidenav.Header>
           <div style={headerStyles}>Teamster</div>

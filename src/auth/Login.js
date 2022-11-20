@@ -22,7 +22,13 @@ export function Login({funcNav}){
         .then((response) => {
           console.log(response)
           funcNav(true)
-          routeChange(`./home/config`)
+          if(response.data.usertype == "admin"){
+            routeChange(`./home/config`)
+          }
+          else{
+            routeChange(`./home/createMeeting`)
+          }
+          
         })
         .catch((error) => {
             const data = error.response.data

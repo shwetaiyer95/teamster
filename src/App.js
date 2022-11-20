@@ -28,10 +28,10 @@ function App() {
         }
         <Routes>
         <Route path="/" element={<Login funcNav={setShowNav}/>} />       
-        <Route path="/config" element={<Config />}  />
+        <Route path="/home/config" element={<Config />}  />
         <Route path="/Registration" element={<Registration />}  />
-        <Route path="/teams" element={<Meetings />} />
-        <Route path="/createMeeting" element={<CreateMeeting />} />
+        <Route path="/home/teams" element={<Meetings />} />
+        <Route path="/home/createMeeting" element={<CreateMeeting />} />
         </Routes>
         </div>
       </Router>
