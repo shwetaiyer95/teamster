@@ -16,11 +16,13 @@ export default function Tasks() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [assigned, setAssigned] = useState("");
-  const back = [{"id": 1, "title": "first task", "subtitle": "first subtitle", "text": "backlog"}]
+  const back = [{"id": 1, "title": "first task", "summary": "first subtitle", "duration": "2022-12-24 12:02:13"}]
+  const completed = [{"id": 1, "title": "create react app", "summary": "create your first app", "duration": "2022-15-24 12:02:13"}]
   const HOST = "http://127.0.0.1:5000";
   const { userId } = useParams();
   useEffect(() => {
     fetchTasks();
+    console.log("fetched tasks")
   }, []);
 
  function handleTaskCreateModalClose (){
@@ -30,8 +32,9 @@ export default function Tasks() {
  function handleTaskCreateModalOpen(){
     setShowTaskCreate(true)
  }
-  const getTaskCard = (id, title, summary) => {
-    return <CardComponent key={id} title={title} subtitle={summary} ></CardComponent>
+  const getTaskCard = (id, title, summary,duration) => {
+    console.log(duration)
+    return <CardComponent key={id} title={title} text={duration} subtitle={summary}></CardComponent>
 }
 const fetchTasks = async () => {
     getTasks(userId);
@@ -41,7 +44,7 @@ const getTasks = (uid) => {
 Axios.get(`${HOST}/get_tasks/${uid}`)
 .then((response) => {
     console.log(response.data)
-    // setTasks(response.data.notes);
+    setTasks(response.data.tasks);
 })
 .catch((error) => {
     const data = error.response.data
@@ -53,9 +56,9 @@ Axios.get(`${HOST}/get_tasks/${uid}`)
 
   const handleTaskCreateSubmit = (e) => {
     e.preventDefault();
+    console.log({name: title, assigned:assigned, duration: "", description: summary})
     Axios.post('http://127.0.0.1:5000/create_task', {name: title, assigned:assigned, duration: "", description: summary})
     .then((response) => {
-      console.log(response)
       alert("Task Created")
     })
     .catch((error) => {
@@ -81,7 +84,7 @@ Axios.get(`${HOST}/get_tasks/${uid}`)
 
             <Form.Group className="mb-3" controlId="formAssigned">
             <Form.Label>Assigned</Form.Label>
-            <Form.Control onChange={(e) => setSummary(e.target.value)}  placeholder="Enter Assigned" />
+            <Form.Control onChange={(e) => setAssigned(e.target.value)}  placeholder="Enter Assigned" />
             </Form.Group>
 
         <Button onClick = {handleTaskCreateSubmit} variant="primary" type="submit">
@@ -110,16 +113,16 @@ Axios.get(`${HOST}/get_tasks/${uid}`)
         <tr>
           <td><div>
         {back.map(event => {
-                    return getTaskCard(event.id,event.title,event.summary,event.subtitle)
+                    return getTaskCard(event.id,event.title,event.summary,event.duration)
                 })}
    </div></td>
           <td><div>
-        {back.map(event => {
-                    return getTaskCard(event.id,event.title,event.summary,event.subtitle)
+        {tasks.map(event => {
+                    return getTaskCard(event.id,event.title,event.summary,event.duration)
                 })}
    </div></td>
           <td><div>
-        {back.map(event => {
+        {completed.map(event => {
                     return getTaskCard(event.id,event.title,event.summary,event.subtitle)
                 })}
    </div></td>

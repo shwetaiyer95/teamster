@@ -178,14 +178,17 @@ def create_task(name, assigned, duration, description):
         conn = connect()
         with conn.cursor() as cur:
             sql = "SELECT userid FROM user_table WHERE name='%s';" % (assigned)
+            print(assigned)
             cur.execute(sql)
             userid = cur.fetchone()[0]
+            print(userid)
             sql = "INSERT INTO task(taskId, name, duration, description, assignedId) values(UUID(), '%s', '%s', '%s', '%s');" % (
                 name, duration, description, userid)
             cur.execute(sql)
             conn.commit()
             return True
-    except Exception:
+    except Exception as e:
+        print(e)
         return False
 
 def get_task(uid):
@@ -193,6 +196,7 @@ def get_task(uid):
         conn = connect()
         with conn.cursor() as cur:
             sql = "SELECT taskID, name, duration, description FROM task WHERE assignedId='%s';" % (uid)
+            print(sql)
             cur.execute(sql)
             tasks = cur.fetchall()
         return tasks
@@ -308,7 +312,7 @@ def task_creator():
     description = request.json.get('description')
     if name is not None and assigned is not None and duration is not None and description is not None:
         if create_task(name, assigned, duration, description):
-            return make_response(jsonify({'message': 'Habit created'}, 200))
+            return make_response(jsonify({'message': 'Task created'}, 200))
 
     return make_response(jsonify({}), 400)
 
@@ -330,12 +334,19 @@ def method_task(uid):
     if uid and uid!= '':
         tasks = get_task(uid)
         if tasks:
-            return make_response(jsonify({'tasks': tasks}), 200)
+            tasks_json = []
+            for task in tasks:
+                tasks_json.append({
+                    'id': task[0],
+                    'title': task[1],
+                    'summary': task[3],
+                    'duration': task[2]
+                })
+            return make_response(jsonify({'tasks': tasks_json}), 200)
         else:
             return make_response(jsonify({'tasks': []}), 200)
 
     return make_response(jsonify({}), 400)
-
 
 @app.route('/get_focus_break_time/<string:uid>')
 def get_method_focus_break_time(uid):
