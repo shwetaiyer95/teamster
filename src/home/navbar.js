@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Sidenav, Nav } from 'rsuite';
 import './navbar.css';
 
-export const NavigationBar = ({adminuser}) => {
+const NavigationBar = ({adminuser}) => {
   // TODO: Call api for teams
 
   const headerStyles = {
@@ -52,71 +52,4 @@ export const NavigationBar = ({adminuser}) => {
     )
   }
 
-// // import { Nav, Navbar, Form, FormControl } from 'react-bootstrap';
-// // import styled from 'styled-components';
-// import SidebarMenu from 'react-bootstrap-sidebar-menu';
-// // import 'react-bootstrap-sidebar-menu/dist/sidebar-menu.scss'
-
-// // const Styles = styled.div`
-// //   .navbar { background-color: #222; }
-// //   a, .navbar-nav, .navbar-light .nav-link {
-// //     color: #9FFFCB;
-// //     &:hover { color: white; }
-// //   }
-// //   .navbar-brand {
-// //     font-size: 1.4em;
-// //     color: #9FFFCB;
-// //     &:hover { color: white; }
-// //   }
-// //   .form-center {
-// //     position: absolute !important;
-// //     left: 25%;
-// //     right: 25%;
-// //   }
-// // `;
-
-// export const NavigationBar = () => {
-//   return (
-//     <SidebarMenu>
-//       <SidebarMenu.Header>
-//         <SidebarMenu.Brand>
-//           Teamster
-//         </SidebarMenu.Brand>
-//         {/* <SidebarMenu.Toggle /> */}
-//       </SidebarMenu.Header>
-//       <SidebarMenu.Body>
-//         <SidebarMenu.Nav>
-//           <SidebarMenu.Nav.Link>
-//             {/* <SidebarMenu.Nav.Icon>
-//               Tasks
-//             </SidebarMenu.Nav.Icon> */}
-//             <SidebarMenu.Nav.Title>
-//               Tasks
-//             </SidebarMenu.Nav.Title>
-//           </SidebarMenu.Nav.Link>
-//         </SidebarMenu.Nav>
-//         <SidebarMenu.Nav>
-//           <SidebarMenu.Nav.Link>
-//             {/* <SidebarMenu.Nav.Icon>
-//               Tasks
-//             </SidebarMenu.Nav.Icon> */}
-//             <SidebarMenu.Nav.Title>
-//               Board
-//             </SidebarMenu.Nav.Title>
-//           </SidebarMenu.Nav.Link>
-//         </SidebarMenu.Nav>
-//         <SidebarMenu.Nav>
-//           <SidebarMenu.Nav.Link>
-//             {/* <SidebarMenu.Nav.Icon>
-//               Tasks
-//             </SidebarMenu.Nav.Icon> */}
-//             <SidebarMenu.Nav.Title>
-//               Meetings
-//             </SidebarMenu.Nav.Title>
-//           </SidebarMenu.Nav.Link>
-//         </SidebarMenu.Nav>
-//       </SidebarMenu.Body>
-//     </SidebarMenu>
-//   )
-// }
-
+export default NavigationBar;

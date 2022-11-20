@@ -21,7 +21,7 @@ export function Login(){
         Axios.post(`${HOST}/login`, {email:email, password: password})
         .then((response) => {
           console.log(response)
-          routeChange(`/Notes/${response.data.uid}`)
+          routeChange(`./home/config`)
         })
         .catch((error) => {
             const data = error.response.data

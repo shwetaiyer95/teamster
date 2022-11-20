@@ -3,7 +3,7 @@ import CardComponent from "./cardComponent"
 import Axios from "axios"
 import "./cardComponent.css"
 import { Button, Form, FormCheck, Modal } from 'react-bootstrap';
-const Config = ({title, subtitle, text, links}) => {
+const Config = ({funcNav}) => {
     const [showUserCreate, setShowUserCreate] = useState(false);
     const [showTeamCreate, setShowTeamCreate] = useState(false);
     const [showWorkPermission, setShowWorkPermission] = useState(false);
@@ -20,7 +20,10 @@ const Config = ({title, subtitle, text, links}) => {
         { value: 'America/Los_Angeles', text: "America/Los_Angeles" }
         ]
 
-
+    useEffect(() => {
+        // Update the document title using the browser API
+        funcNav(true);
+        });
     const handleTimeZone = e => { 
         setTimeZone(e.target.value);
     }
