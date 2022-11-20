@@ -37,7 +37,7 @@
   }
 }
 
-.container{
+.appContainer{
   display: flex;
   flex-direction: row;
   margin: 0px !important;
@@ -45,5 +45,5 @@
 }
 
 .zerowidth {
-  
+
 }

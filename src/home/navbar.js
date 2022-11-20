@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react';
 import { Sidenav, Nav } from 'rsuite';
 import './navbar.css';
+import { useNavigate } from "react-router-dom";
 
 const NavigationBar = ({adminuser}) => {
   // TODO: Call api for teams
+  const navigate = useNavigate();
+    const routeChange = (path) =>{
+        navigate(path)
+    }
 
   const headerStyles = {
     padding: 20,
@@ -17,9 +22,9 @@ const NavigationBar = ({adminuser}) => {
     console.log(name)
     return (
       <Nav.Menu eventKey={id} title={name}>
-        <Nav.Item eventKey={`${id}-1`}>Tasks</Nav.Item>
-        <Nav.Item eventKey={`${id}-2`}>Teamboard</Nav.Item>
-        <Nav.Item eventKey={`${id}-3`}>Meetings</Nav.Item>
+        <Nav.Item eventKey={`${id}-1`} onClick={() => routeChange("/tasks")}>Tasks</Nav.Item>
+        <Nav.Item eventKey={`${id}-2`} onClick={() => routeChange("/tasks")}>Teamboard</Nav.Item>
+        <Nav.Item eventKey={`${id}-3`} onClick={() => routeChange("home/meeting")}>Meetings</Nav.Item>
       </Nav.Menu>
     )
   }

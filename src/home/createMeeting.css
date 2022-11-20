@@ -1,0 +1,14 @@
+.wrapperDiv {
+    width: 100% !important;
+}
+
+.flexMeetingContainer {
+    display: flex
+}
+
+.submitButtonWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 83%;
+}

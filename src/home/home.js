@@ -4,7 +4,7 @@ import Config from "./config"
 const Home = () => {
 
     return(
-        <div class= "container">
+        <div className= "homeContainer">
         <NavigationBar></NavigationBar>
         <Config></Config>
         </div>

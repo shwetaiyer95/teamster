@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-date-picker'
 import moment from 'moment';
+import './createMeeting.css'
 
 export const CreateMeeting = () => {
     const [meetingData, setData] = useState({
@@ -87,6 +88,15 @@ export const CreateMeeting = () => {
     //     setData(copyMeetingData)
     // }
 
+    const dropdownHeight = {
+        control: base => ({
+            ...base,
+            height: 10,
+            minHeight: 10,
+            maxHeight: 15
+          })
+    }
+
     const handleCreateMeetingSubmit = () => {
         const toSend = {
             'summary': meetingData.title,
@@ -130,7 +140,7 @@ export const CreateMeeting = () => {
     }
 
     return (
-        <div>
+        <div className="wrapperDiv">
             <div className="titlebar">
                 <p className="titlebarname">
                 Welcome!,
@@ -138,6 +148,7 @@ export const CreateMeeting = () => {
             </div>
             <div>
                 <Form>
+                    <div className="flexMeetingContainer">
                     <div
                     className="detailsbox"
                     style={{ height: 'fit-content' }}
@@ -181,13 +192,13 @@ export const CreateMeeting = () => {
                             <Form.Group className="mb-3" controlId="formStartDate">
                                 <Form.Label>Start Date:</Form.Label>
                                 <div>
-                                    <DatePicker value={meetingData.startDate} onChange={(event) => handleStartDateChange(event.target.value)} />
+                                    <DatePicker value={meetingData.startDate} onChange={handleStartDateChange} />
                                 </div>
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formEndDate">
                                 <Form.Label>End Date: </Form.Label>
                                 <div>
-                                    <DatePicker value={meetingData.endDate} onChange={(event) => handleEndDateChange(event.target.value)} />
+                                    <DatePicker value={meetingData.endDate} onChange={handleEndDateChange} />
                                 </div>
                             </Form.Group>
 
@@ -206,18 +217,19 @@ export const CreateMeeting = () => {
                                 <select value={meetingData.endHour} onChange={(event) => handleEndHourChange(event.target.value)}>
                                     {getHours("e")}
                                 </select>
-                                <select value={meetingData.endMinute} onChange={(event) => handleEndMinuteChange(event.target.value)}>
+                                <select value={meetingData.endMinute} onChange={(event) => handleEndMinuteChange(event.target.value)} style={dropdownHeight}>
                                     {getMinutes("e")}
                                 </select>
                             </Form.Group>
                         
                         
                     </div>
-                    
+                    </div>
+                    <div className="submitButtonWrapper">
                     <Button variant="primary" type="submit" onClick = {handleCreateMeetingSubmit}>
                         Submit
                     </Button>
-                    
+                    </div>
                 
                 
                 </Form>
